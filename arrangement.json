@@ -1,0 +1,184 @@
+{
+  "made_with": "ARTT3005 board",
+  "board_heading": null,
+  "recorder_is": "person",
+  "key_mapping": {
+    "id": "id",
+    "title": "title",
+    "type": "",
+    "file": "file",
+    "date": "date",
+    "place": "place",
+    "recorder": "recorder",
+    "not_captured": "not_captured",
+    "certainty": "certainty"
+  },
+  "extra_fields": [
+    "type"
+  ],
+  "shown_on_card": null,
+  "groups": [
+    {
+      "heading": "2020",
+      "members": [
+        "REC-001",
+        "REC-003",
+        "REC-002"
+      ]
+    },
+    {
+      "heading": "2021",
+      "members": [
+        "REC-008",
+        "REC-007",
+        "REC-006",
+        "REC-005",
+        "REC-004"
+      ]
+    },
+    {
+      "heading": "2022",
+      "members": [
+        "REC-012",
+        "REC-009",
+        "REC-010",
+        "REC-011"
+      ]
+    },
+    {
+      "heading": "Not Mine Lol. Not Editted Yet",
+      "members": [
+        "REC-013",
+        "REC-014",
+        "REC-015",
+        "REC-016",
+        "REC-017",
+        "REC-018",
+        "REC-019",
+        "REC-020"
+      ]
+    }
+  ],
+  "positions": {
+    "REC-001": {
+      "x": 0.0008,
+      "y": 0,
+      "world_x": 59,
+      "world_y": -411
+    },
+    "REC-002": {
+      "x": 0.1426,
+      "y": 0.0241,
+      "world_x": 244,
+      "world_y": -390
+    },
+    "REC-003": {
+      "x": 0.2843,
+      "y": 0.0513,
+      "world_x": 429,
+      "world_y": -366
+    },
+    "REC-004": {
+      "x": 0,
+      "y": 0.332,
+      "world_x": 58,
+      "world_y": -121
+    },
+    "REC-005": {
+      "x": 0.142,
+      "y": 0.3467,
+      "world_x": 243,
+      "world_y": -109
+    },
+    "REC-006": {
+      "x": 0.2854,
+      "y": 0.3686,
+      "world_x": 430,
+      "world_y": -90
+    },
+    "REC-007": {
+      "x": 0.4263,
+      "y": 0.3897,
+      "world_x": 614,
+      "world_y": -71
+    },
+    "REC-008": {
+      "x": 0.5588,
+      "y": 0.332,
+      "world_x": 787,
+      "world_y": -121
+    },
+    "REC-009": {
+      "x": 0.0011,
+      "y": 0.664,
+      "world_x": 59,
+      "world_y": 168
+    },
+    "REC-010": {
+      "x": 0.1444,
+      "y": 0.665,
+      "world_x": 246,
+      "world_y": 169
+    },
+    "REC-011": {
+      "x": 0.2861,
+      "y": 0.665,
+      "world_x": 431,
+      "world_y": 169
+    },
+    "REC-012": {
+      "x": 0.4312,
+      "y": 0.7081,
+      "world_x": 620,
+      "world_y": 206
+    },
+    "REC-013": {
+      "x": 0.0001,
+      "y": 0.9987,
+      "world_x": 58,
+      "world_y": 460
+    },
+    "REC-014": {
+      "x": 0.1426,
+      "y": 0.9985,
+      "world_x": 244,
+      "world_y": 460
+    },
+    "REC-015": {
+      "x": 0.2892,
+      "y": 0.9986,
+      "world_x": 435,
+      "world_y": 460
+    },
+    "REC-016": {
+      "x": 0.4335,
+      "y": 1,
+      "world_x": 623,
+      "world_y": 461
+    },
+    "REC-017": {
+      "x": 0.5747,
+      "y": 0.9998,
+      "world_x": 807,
+      "world_y": 461
+    },
+    "REC-018": {
+      "x": 0.7163,
+      "y": 0.9985,
+      "world_x": 992,
+      "world_y": 460
+    },
+    "REC-019": {
+      "x": 0.8581,
+      "y": 0.9975,
+      "world_x": 1177,
+      "world_y": 459
+    },
+    "REC-020": {
+      "x": 1,
+      "y": 0.9987,
+      "world_x": 1362,
+      "world_y": 460
+    }
+  }
+}
