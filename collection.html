@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pale: '#F4F5F7',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    .card-inner.is-flipped {
+      transform: rotateY(180deg);
+    }
+    .btn-active:active {
+      transform: scale(0.98);
+    }
+
+    .field-box {
+      min-height: 2rem;
+      overflow: hidden;
+    }
+    .field-value {
+      display: block;
+      filter: blur(0);
+      opacity: 1;
+      letter-spacing: 0;
+      transition:
+        filter 15s linear,
+        opacity 15s linear,
+        letter-spacing 15s linear;
+    }
+    .card-inner.is-flipped .field-value {
+      filter: blur(8px);
+      opacity: 0;
+      letter-spacing: 0.45em;
+    }
+    .field-value-last {
+      transition:
+        filter 3s linear,
+        opacity 3s linear,
+        letter-spacing 3s linear;
+    }
+    .card-inner.is-flipped .field-value-last {
+      transition-delay: 12s;
+    }
+  </style>
+</head>
+<body class="bg-pale min-h-screen p-4 sm:p-8 font-sans antialiased text-slate-800">
+
+  <header class="max-w-6xl mx-auto mb-8 text-center sm:text-left">
+    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Collection</p>
+    <h1 id="collectionTitle" class="text-2xl font-bold text-slate-900 tracking-tight">Loading…</h1>
+  </header>
+
+  <div id="collectionGrid" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
+  </div>
+
+  <script>
+    function handleArchive(cardId) {
+      document.getElementById(cardId).classList.add('is-flipped');
+    }
+
+    function flipBack(cardId) {
+      document.getElementById(cardId).classList.remove('is-flipped');
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function showLoadError() {
+      document.body.innerHTML =
+        '<p class="font-mono text-sm text-slate-800 p-8 max-w-xl">' +
+        'records.json did not load. Are you serving the folder?<br>' +
+        'Open http://localhost:8000' +
+        '</p>';
+    }
+
+    function mediaMarkup(record, textContent) {
+      if (record.type === 'image') {
+        return (
+          '<img src="' + escapeHtml(record.file) + '" alt="' + escapeHtml(record.title) + '" ' +
+          'class="w-full h-64 object-cover rounded-xl bg-slate-100">'
+        );
+      }
+
+      if (record.type === 'sound') {
+        return (
+          '<div class="w-full h-64 rounded-xl bg-slate-100 flex flex-col items-center justify-center gap-4 px-6">' +
+            '<p class="text-xs uppercase tracking-widest text-slate-500 font-bold">Sound record</p>' +
+            '<audio controls class="w-full" src="' + escapeHtml(record.file) + '"></audio>' +
+          '</div>'
+        );
+      }
+
+      return (
+        '<div class="w-full h-64 rounded-xl bg-slate-100 overflow-hidden p-4 text-left flex flex-col">' +
+          '<p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2 shrink-0">Text record</p>' +
+          '<p class="text-sm text-slate-700 whitespace-pre-line leading-relaxed overflow-y-auto min-h-0 flex-1">' +
+            escapeHtml(textContent || '') +
+          '</p>' +
+        '</div>'
+      );
+    }
+
+    function cardMarkup(record, textContent) {
+      const cardId = 'card-' + record.id;
+      const title = escapeHtml(record.title);
+      const place = escapeHtml(record.place);
+      const date = escapeHtml(record.date);
+      const recorder = escapeHtml(record.recorder);
+      const notCaptured = escapeHtml(record.not_captured);
+      const catalogId = escapeHtml(record.id);
+      const certainty = escapeHtml(record.certainty);
+
+      return (
+        '<main class="perspective-1000 w-full max-w-[460px] h-[520px]">' +
+          '<div id="' + cardId + '" class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">' +
+
+            '<div class="card-front absolute inset-0 bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 p-6 flex flex-col justify-between backface-hidden">' +
+              '<div class="flex flex-col gap-5">' +
+                mediaMarkup(record, textContent) +
+                '<div class="space-y-1.5 text-center sm:text-left">' +
+                  '<h2 class="text-2xl font-bold text-slate-900 tracking-tight">' + title + '</h2>' +
+                  '<p class="text-sm font-normal text-slate-500 tracking-normal">' + place + '</p>' +
+                '</div>' +
+              '</div>' +
+              '<div class="mt-6">' +
+                '<button onclick="handleArchive(\'' + cardId + '\')" ' +
+                'class="btn-active w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 shadow-md shadow-slate-900/10 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 flex items-center justify-center gap-2">' +
+                  '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">' +
+                    '<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />' +
+                  '</svg>' +
+                  '<span>Archive this</span>' +
+                '</button>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="card-back absolute inset-0 bg-[#FAF9F5] rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-300 p-5 flex flex-col justify-between backface-hidden rotate-y-180 font-mono select-none">' +
+              '<div class="h-full border border-slate-700/80 rounded-xl p-4 flex flex-col justify-between bg-white/70 shadow-sm">' +
+                '<div class="border-b-2 border-slate-800 pb-2.5 flex justify-between items-start">' +
+                  '<div>' +
+                    '<span class="block text-[9px] uppercase tracking-widest text-slate-500 font-bold">Archival Record</span>' +
+                    '<p class="text-xs font-bold text-slate-900 tracking-tight">CAT NO. ' + catalogId + '</p>' +
+                  '</div>' +
+                  '<span class="text-[9px] px-1.5 py-0.5 border border-slate-800 text-slate-800 font-bold uppercase tracking-wider bg-slate-100">ARCHIVED</span>' +
+                '</div>' +
+                '<div class="space-y-3 my-auto text-left">' +
+                  '<div>' +
+                    '<label class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-0.5">[ Title ]</label>' +
+                    '<div class="field-box text-xs font-medium text-slate-900 leading-snug bg-slate-50 border border-slate-200 p-1.5 rounded">' +
+                      '<span class="field-value">' + title + '</span>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div>' +
+                    '<label class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-0.5">[ Date and place ]</label>' +
+                    '<div class="field-box text-xs text-slate-800 leading-snug bg-slate-50 border border-slate-200 p-1.5 rounded">' +
+                      '<span class="field-value">' + date + ' — ' + place + '</span>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div>' +
+                    '<label class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-0.5">[ Recorded by ]</label>' +
+                    '<div class="field-box text-xs text-slate-800 leading-snug bg-slate-50 border border-slate-200 p-1.5 rounded">' +
+                      '<span class="field-value">' + recorder + '</span>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div>' +
+                    '<label class="block text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-0.5">[ What was not captured ]</label>' +
+                    '<div class="field-box text-[11px] text-slate-600 italic leading-snug bg-slate-50 border border-slate-200 p-1.5 rounded">' +
+                      '<span class="field-value field-value-last">' + notCaptured + '</span>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="pt-2 border-t border-dashed border-slate-300 flex items-center justify-between text-[10px] text-slate-500">' +
+                  '<span>CERTAINTY: ' + certainty + '</span>' +
+                  '<button onclick="flipBack(\'' + cardId + '\')" class="hover:text-slate-900 font-bold underline flex items-center gap-1 transition-colors">' +
+                    '← Return to front' +
+                  '</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+
+          '</div>' +
+        '</main>'
+      );
+    }
+
+    async function loadTextFile(record) {
+      if (record.type !== 'text') {
+        return '';
+      }
+      const response = await fetch(record.file);
+      if (!response.ok) {
+        return '';
+      }
+      return await response.text();
+    }
+
+    async function loadCollection() {
+      try {
+        const response = await fetch('records.json');
+        if (!response.ok) {
+          throw new Error('failed');
+        }
+        const data = await response.json();
+        const records = (data.records || data).slice(0, 20);
+
+        document.getElementById('collectionTitle').textContent = data.collection || 'Collection';
+        document.title = data.collection || 'Collection';
+
+        const texts = await Promise.all(records.map(loadTextFile));
+        const grid = document.getElementById('collectionGrid');
+        grid.innerHTML = records.map(function (record, index) {
+          return cardMarkup(record, texts[index]);
+        }).join('');
+      } catch (error) {
+        showLoadError();
+      }
+    }
+
+    loadCollection();
+  </script>
+</body>
+</html>
